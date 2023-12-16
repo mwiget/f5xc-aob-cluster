@@ -1,0 +1,12 @@
+project_prefix       = "prefix"
+owner                = "user@email.com"
+
+ssh_public_key_file  = "<path to ssh public key file>"
+local_http_folder    = "/var/www/html/redhat"
+local_tftp_folder    = "/var/lib/tftpboot/redhat"
+base_url             = "http://<ip address>/redhat"
+
+f5xc_api_url         = "https://<tenant>.console.ves.volterra.io/api"
+f5xc_api_token       = "............................"
+f5xc_tenant          = "<tenant>-........"
+f5xc_api_p12_file    = "<path to <tenant>.console.ves.volterra.io.api-creds.p12"

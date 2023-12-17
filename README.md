@@ -129,7 +129,8 @@ export KUBECONFIG="$PWD/mw-baremetal-3.kubeconfig"
 $ kubectl get nodes -o wide
 NAME     STATUS   ROLES        AGE    VERSION        INTERNAL-IP     EXTERNAL-IP   OS-IMAGE                                      KERNEL-VERSION                 CONTAINER-RUNTIME
 black1   Ready    ves-master   103m   v1.24.13-ves   192.168.42.34   <none>        Red Hat Enterprise Linux 9.2023.29.2 (Plow)   5.14.0-284.30.1.el9_2.x86_64   cri-o://1.24.4
-blue1    Ready    ves-master   104m   v1.24.13-ves   192.168.42.33   <none>        Red Hat Enterprise Linux 9.2023.29.2 (Plow)   5.14.0-284.30.1.el9_2.x86_64   cri-o://1.24.4green1   Ready    ves-master   103m   v1.24.13-ves   192.168.42.32   <none>        Red Hat Enterprise Linux 9.2023.29.2 (Plow)   5.14.0-284.30.1.el9_2.x86_64   cri-o://1.24.4
+blue1    Ready    ves-master   104m   v1.24.13-ves   192.168.42.33   <none>        Red Hat Enterprise Linux 9.2023.29.2 (Plow)   5.14.0-284.30.1.el9_2.x86_64   cri-o://1.24.4
+green1   Ready    ves-master   103m   v1.24.13-ves   192.168.42.32   <none>        Red Hat Enterprise Linux 9.2023.29.2 (Plow)   5.14.0-284.30.1.el9_2.x86_64   cri-o://1.24.4
 ```
 ## Troubleshooting
 

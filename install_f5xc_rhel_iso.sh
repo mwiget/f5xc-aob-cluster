@@ -30,9 +30,15 @@ if [ ! -d $tftp_folder ]; then
 fi
 
 echo "mounting iso ..."
-DISK=$(hdiutil attach -nomount $IMAGE | grep FDisk | cut -d' ' -f1)
-echo $DISK
-mount -t cd9660 -r -o noowners $DISK ./iso
+if [ "$(uname)" == "Darwin" ]; then
+  # Load the kext module (required if mount fails on Big Sur)
+  # sudo kmutil load -p /System/Library/Extensions/cd9660.kext
+  DISK=$(hdiutil attach -nomount $IMAGE | grep FDisk | cut -d' ' -f1)
+  echo $DISK
+  mount -t cd9660 -r -o noowners $DISK ./iso
+else
+  sudo mount -o loop,ro -t iso9660 $IMAGE ./iso
+fi
 
 echo "copying files to tftp folder $tftp_folder/ ..."
 cp -rp iso/EFI $tftp_folder/
@@ -45,5 +51,9 @@ mkdir -p $http_folder/images
 cp -p iso/images/install.img $http_folder/images/
 chmod -R +r $http_folder/
 
+if [ "$(uname)" == "Darwin" ]; then
 umount $DISK
 hdiutil detach $DISK
+else
+  sudo umount ./iso
+fi

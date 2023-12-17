@@ -10,7 +10,7 @@ ipmi_password=$4
 
 if [ -z "$ipmi_password" ]; then
   echo "$0 <node> <ipmi_ip> <ipmi_user> <ipmi_password>"
-  exit 1
+  exit 0    # to allow TF to continue without automatic ipmi trigger
 fi
 
 echo "checking ipmitool version ..."

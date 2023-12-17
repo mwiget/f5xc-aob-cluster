@@ -131,3 +131,13 @@ variable "vesbkp_password" {
   type = string
   default = ""
 }
+
+variable "ipmi_user" {
+  type = string
+  default = ""
+}
+
+variable "ipmi_password" {
+  type = string
+  default = ""
+}

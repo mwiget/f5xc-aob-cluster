@@ -50,11 +50,6 @@ variable "f5xc_registration_retry" {
     default = 20
 }
 
-variable "admin_password" {
-  type = string
-  default = ""
-}
-
 variable "ipmi_user" {
   type = string
   default = ""
@@ -85,3 +80,12 @@ variable "base_url" {
   default = "http://localhost/redhat"
 }
 
+variable "admin_password" {
+  type = string
+  default = ""
+}
+
+variable "vesbkp_password" {
+  type = string
+  default = ""
+}

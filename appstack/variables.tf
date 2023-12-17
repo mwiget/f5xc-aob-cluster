@@ -67,8 +67,6 @@ variable "f5xc_worker_nodes" {
   default = {}
 }
 
-variable "admin_password" {}
-
 variable "f5xc_cluster_labels" {
   type = map(string)
 }
@@ -112,4 +110,24 @@ variable "base_url" {
 variable "manual_registration" {
   type = string
   default = false
+}
+
+variable "original_outside_nic" {
+  type = string
+  default = "em1"
+}
+
+variable "primary_outside_nic" {
+  type = string
+  default = "eth0"
+}
+
+variable "admin_password" {
+  type = string
+  default = ""
+}
+
+variable "vesbkp_password" {
+  type = string
+  default = ""
 }

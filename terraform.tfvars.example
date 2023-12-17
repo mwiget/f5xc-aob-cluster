@@ -1,6 +1,9 @@
 project_prefix       = "prefix"
 owner                = "user@email.com"
 
+admin_password       = "<encrypted admin password>"
+vesbkp_password      = "<encrypted vesbkp password>"
+
 ssh_public_key_file  = "<path to ssh public key file>"
 local_http_folder    = "/var/www/html/redhat"
 local_tftp_folder    = "/var/lib/tftpboot/redhat"

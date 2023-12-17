@@ -19,6 +19,8 @@ module "cluster" {
   f5xc_api_token          = var.f5xc_api_token
   f5xc_api_ca_cert        = var.f5xc_api_ca_cert
   volterra_certified_hw   = "kvm-voltstack-combo"
+  original_outside_nic    = "em1"
+  primary_outside_nic     = "eth0"
   owner_tag               = var.owner
   admin_password          = var.admin_password
   f5xc_cluster_labels     = { "site-mesh" : format("%s", var.project_prefix) }
@@ -28,6 +30,6 @@ module "cluster" {
   kubevirt                = true
   # f5xc_tunnel_type      = "SITE_TO_SITE_TUNNEL_SSL"
   # f5xc_http_proxy	      = "http://10.200.2.30:3128"
-  manual_registration     = true  # true -> don't auto-register, terminate
+  # manual_registration     = true  # true -> don't auto-register, terminate
 }
 

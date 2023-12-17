@@ -1,6 +1,9 @@
 project_prefix       = "prefix"
 owner                = "user@email.com"
 
+ipmi_user            = "ADMIN"
+ipmi_password        = "ADMIN"
+
 admin_password       = "<encrypted admin password>"
 vesbkp_password      = "<encrypted vesbkp password>"
 

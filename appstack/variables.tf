@@ -60,6 +60,13 @@ variable "f5xc_cluster_name" {
 
 variable "f5xc_master_nodes" {
   type = map(map(string))
+  default = {
+    default = {
+      ipmi_ip = ""
+      ipmi_user = ""
+      ipmi_password = ""
+    }
+  }
 }
 
 variable "f5xc_worker_nodes" {

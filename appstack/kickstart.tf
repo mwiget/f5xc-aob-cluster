@@ -16,7 +16,7 @@ resource "local_file" "kickstart_files" {
     admin_password           = var.admin_password
     vesbkp_password          = var.vesbkp_password
   })
-  filename = format("%s/kickstart/%s.cfg", var.local_http_folder, each.value["net_mac"])
+  filename = format("%s/kickstart/%s.cfg", var.local_http_folder, lower(each.value["net_mac"]))
 }
 
 output "kickstart_files" {

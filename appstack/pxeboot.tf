@@ -2,7 +2,7 @@ resource "terraform_data" "pxeboot" {
   for_each   = merge(var.f5xc_master_nodes, var.f5xc_worker_nodes)
   input      = {
     node          = each.key
-    ipmi_ip       = each.value["ipmi_ip"]
+    ipmi_ip       = length(each.value) > 1 ? each.value["ipmi_ip"] : ""
     ipmi_user     = var.ipmi_user
     ipmi_password = var.ipmi_password
   }

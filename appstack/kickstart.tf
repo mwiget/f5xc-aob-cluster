@@ -1,6 +1,6 @@
 resource "local_file" "kickstart_files" {
   for_each                 = merge(var.f5xc_master_nodes, var.f5xc_worker_nodes)
-  content                  = templatefile("${path.module}/templates/kickstart.cfg", {
+  content                  = templatefile("${path.module}/templates/${var.kickstart_template}", {
     cluster_name             = var.f5xc_cluster_name
     host_name                = each.key
     latitude                 = var.f5xc_cluster_latitude

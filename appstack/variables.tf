@@ -141,3 +141,8 @@ variable "ipmi_password" {
   type = string
   default = ""
 }
+
+variable "kickstart_template" {
+  type = string
+  default = "kickstart.cfg"
+}

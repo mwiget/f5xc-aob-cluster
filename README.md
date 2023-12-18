@@ -60,14 +60,8 @@ host black1 { hardware ethernet 3c:ec:ef:43:1c:b2; fixed-address 192.168.42.36; 
 Example config for MikroTik router (currently without conditional class handling):
 
 ```
-/ip dhcp-server option
-add code=60 name=vendor-class-id-httpclient value="'HTTPClient'"
-/ip pool
-add name=dhcp_pool0 ranges=192.168.42.10-192.168.42.254
-/ip dhcp-server
-add address-pool=dhcp_pool0 interface=lan name=dhcp1
 /ip dhcp-server network
-add address=192.168.42.0/24 boot-file-name=redhat/EFI/BOOT/BOOTX64.EFI dhcp-option=vendor-class-id-httpclient gateway=192.168.42.1 next-server=192.168.42.254
+add address=192.168.42.0/24 boot-file-name=redhat/EFI/BOOT/BOOTX64.EFI gateway=192.168.42.1 next-server=192.168.42.254
 ```
 
 The shell script [install_f5xc_rhel_iso.sh](./install_f5xc_rhel_iso.sh) downloads the latest F5 XC 

@@ -8,6 +8,10 @@ terraform {
       source = "hashicorp/local"
       version = "2.4.0"
     }
+    restapi = {
+      source = "Mastercard/restapi"
+      version = "1.18.2"
+    }
   }
 }
 

@@ -20,7 +20,7 @@ echo "setting node $node to one time pxe boot ..."
 ipmitool -I lanplus -H $ipmi_ip -U $ipmi_user -P $ipmi_password chassis bootdev pxe options=efiboot
 echo "power off node $node ..."
 ipmitool -I lanplus -H $ipmi_ip -U $ipmi_user -P $ipmi_password chassis power off || true
-echo "waiting 5 secs ..."
-sleep 5
+echo "waiting 10 secs ..."
+sleep 10
 echo "power on node $node ..."
 ipmitool -I lanplus -H $ipmi_ip -U $ipmi_user -P $ipmi_password chassis power on

@@ -53,7 +53,7 @@ resource "restapi_object" "cluster" {
               "name": "bond0",
               "devices": [
                 var.primary_outside_nic,
-                var.primary_outside_nic_2"
+                var.primary_outside_nic_2
               ],
               "lacp": {
                 "rate": 30
@@ -71,7 +71,7 @@ resource "restapi_object" "cluster" {
               {
                 "labels": {},
                 "ethernet_interface": {
-                  "device": bond0,
+                  "device": "bond0",
                   "cluster": {},
                   "untagged": {},
                   "dhcp_client": {},

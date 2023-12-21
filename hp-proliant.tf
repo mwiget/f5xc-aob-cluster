@@ -6,14 +6,16 @@ module "hp-proliant" {
   local_tftp_folder       = var.local_tftp_folder
   base_url                = var.base_url
   f5xc_master_nodes       = {
-    sb-hp-4  = { net_mac = "d4:f5:ef:7c:c9:9c", ipmi_ip = "192.168.3.5" },
-    sb-hp-5  = { net_mac = "d4:f5:ef:7e:65:50", ipmi_ip = "192.168.3.4" },
-    sb-hp-6  = { net_mac = "d4:f5:ef:7e:66:0c", ipmi_ip = "192.168.3.13" }
+    sb-hp-4  = { net_mac = "d4:f5:ef:7c:c9:9c", ip = "10.250.0.61/16", ipmi_ip = "192.168.3.5" },
+    sb-hp-5  = { net_mac = "d4:f5:ef:7e:65:50", ip = "10.250.0.65/16", ipmi_ip = "192.168.3.4" },
+    sb-hp-6  = { net_mac = "d4:f5:ef:7e:66:0c", ip = "10.250.0.68/16", ipmi_ip = "192.168.3.13" }
   }
   f5xc_worker_nodes       = {
-#    sb-hp-7  = { net_mac = "d4:f5:ef:7c:c9:cc", ipmi_ip = "192.168.3.6" },
-#    sb-hp-8  = { net_mac = "d4:f5:ef:7c:c9:c8", ipmi_ip = "192.168.3.12" }
+#    sb-hp-7  = { net_mac = "d4:f5:ef:7c:c9:cc", ip = "10.250.0.14", ipmi_ip = "192.168.3.6" },
+#    sb-hp-8  = { net_mac = "d4:f5:ef:7c:c9:c8", ip = "10.250.0.15", ipmi_ip = "192.168.3.12" }
   }
+  dns_servers             = [ "1.1.1.1", "8.8.8.8" ]
+  ip_gateway              = "10.250.0.1"
   ipmi_user               = var.ipmi_user
   ipmi_password           = var.ipmi_password
   f5xc_tenant             = var.f5xc_tenant
@@ -36,6 +38,6 @@ module "hp-proliant" {
   f5xc_tunnel_type        = "SITE_TO_SITE_TUNNEL_SSL"
   kickstart_template      = "kickstart-hp-proliant-dl360.cfg"
   # f5xc_http_proxy	  = "http://10.200.2.30:3128"
-  # manual_registration     = true  # true -> don't auto-register, terminate
+  manual_registration     = true  # true -> don't auto-register, terminate
 }
 

@@ -15,6 +15,8 @@ resource "local_file" "kickstart_files" {
     primary_outside_nic      = var.primary_outside_nic
     admin_password           = var.admin_password
     vesbkp_password          = var.vesbkp_password
+    ip_gateway               = var.ip_gateway
+    ip_address               = each.value["ip"]
   })
   filename = format("%s/kickstart/%s.cfg", var.local_http_folder, lower(each.value["net_mac"]))
 }

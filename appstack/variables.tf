@@ -158,3 +158,12 @@ variable "kickstart_template" {
   type = string
   default = "kickstart.cfg"
 }
+
+variable "ip_gateway" {
+  type = string
+  default = ""
+}
+variable "dns_servers" {
+  type = list(string)
+  default = []
+}

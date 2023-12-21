@@ -92,8 +92,13 @@ resource "restapi_object" "cluster" {
     })
 }
 
+resource "time_sleep" "wait_10_minutes" {
+  depends_on = [restapi_object.cluster]
+  create_duration = "600s"
+}
+
 resource "volterra_registration_approval" "master" {
-  depends_on   = [restapi_object.cluster]
+  depends_on   = [time_sleep.wait_10_minutes]
   for_each      = var.manual_registration ? {} : var.f5xc_master_nodes
   cluster_name = var.f5xc_cluster_name
   cluster_size = length(var.f5xc_master_nodes)

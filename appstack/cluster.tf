@@ -73,7 +73,6 @@ resource "restapi_object" "cluster" {
                 "ethernet_interface": {
                   "device": "bond0",
                   "node": k,
-                  "cluster": {},
                   "untagged": {},
                   "static_ip": {
                     "node_static_ip": {

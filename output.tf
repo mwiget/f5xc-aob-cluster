@@ -1,6 +1,8 @@
 output "clusters" {
   value = {
-    cluster = module.cluster
+    supermicro  = module.supermicro
+    hp-proliant = module.hp-proliant
+    kvm         = module.kvm
   }
   sensitive = false
 }

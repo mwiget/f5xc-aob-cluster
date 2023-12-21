@@ -1,4 +1,4 @@
-module "pxe" {
+module "kvm" {
   count = 0
   source                  = "./appstack"
   f5xc_cluster_name       = format("%s-pxe-1", var.project_prefix)

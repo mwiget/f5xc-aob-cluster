@@ -48,7 +48,34 @@ resource "restapi_object" "cluster" {
         ],
         "worker_nodes": [ for k,v in var.f5xc_worker_nodes : k ],
         "no_bond_devices": {},
-        "default_network_config": {},
+        "custom_network_config": {
+          "default_config": {},
+          "sm_connection_pvt_ip": {},
+          "interface_list": {
+            "interfaces": [
+              {
+                "labels": {},
+                "ethernet_interface": {
+                  "device": var.primary_outside_nic,
+                  "cluster": {},
+                  "untagged": {},
+                  "dhcp_client": {},
+                  "site_local_network": {},
+                  "mtu": 0,
+                  "priority": 0,
+                  "is_primary": {},
+                  "monitor_disabled": {}
+                },
+                "dc_cluster_group_connectivity_interface_disabled": {}
+              }
+            ]
+          },
+          "no_network_policy": {},
+          "no_forward_proxy": {},
+          "no_global_network": {},
+          "vip_vrrp_mode": "VIP_VRRP_INVALID",
+          "tunnel_dead_timeout": 0
+        },
         "default_storage_config": {},
         "disable_gpu": {},
         "k8s_cluster": {

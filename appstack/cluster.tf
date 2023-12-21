@@ -47,7 +47,22 @@ resource "restapi_object" "cluster" {
           }
         ],
         "worker_nodes": [ for k,v in var.f5xc_worker_nodes : k ],
-        "no_bond_devices": {},
+        "bond_device_list": {
+          "bond_devices": [
+            {
+              "name": "bond0",
+              "devices": [
+                var.primary_outside_nic,
+                var.primary_outside_nic_2"
+              ],
+              "lacp": {
+                "rate": 30
+              },
+              "link_polling_interval": 1000,
+              "link_up_delay": 200
+            }
+          ]
+        },
         "custom_network_config": {
           "default_config": {},
           "sm_connection_pvt_ip": {},
@@ -56,7 +71,7 @@ resource "restapi_object" "cluster" {
               {
                 "labels": {},
                 "ethernet_interface": {
-                  "device": var.primary_outside_nic,
+                  "device": bond0,
                   "cluster": {},
                   "untagged": {},
                   "dhcp_client": {},

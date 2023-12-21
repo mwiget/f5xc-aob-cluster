@@ -129,6 +129,11 @@ variable "primary_outside_nic" {
   default = "eth0"
 }
 
+variable "primary_outside_nic_2" {
+  type = string
+  default = "eth1"
+}
+
 variable "admin_password" {
   type = string
   default = ""

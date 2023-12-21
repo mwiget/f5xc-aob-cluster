@@ -68,13 +68,19 @@ resource "restapi_object" "cluster" {
           "sm_connection_pvt_ip": {},
           "interface_list": {
             "interfaces": [
-              {
+              for k,v in merge(var.f5xc_master_nodes, var.f5xc_worker_nodes): {
                 "labels": {},
                 "ethernet_interface": {
                   "device": "bond0",
+                  "node": k,
                   "cluster": {},
                   "untagged": {},
-                  "dhcp_client": {},
+                  "static_ip": {
+                    "node_static_ip": {
+                      "ip_address": v["ip"],
+                      "default_gw": var.ip_gateway
+                    }
+                  },
                   "site_local_network": {},
                   "mtu": 0,
                   "priority": 0,

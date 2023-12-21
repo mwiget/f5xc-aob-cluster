@@ -24,6 +24,7 @@ module "hp-proliant" {
   volterra_certified_hw   = "hp-proliant-dl360-voltstack"
   original_outside_nic    = "ens2f0"
   primary_outside_nic     = "ens2f0"
+  primary_outside_nic_2   = "ens2f1"
   owner_tag               = var.owner
   admin_password          = var.admin_password
   vesbkp_password         = var.vesbkp_password

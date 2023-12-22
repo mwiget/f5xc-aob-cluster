@@ -11,8 +11,8 @@ module "hp-proliant" {
     sb-hp-6  = { net_mac = "d4:f5:ef:7e:66:0c", ip = "10.250.0.68/16", ipmi_ip = "192.168.3.13" }
   }
   f5xc_worker_nodes       = {
-#    sb-hp-7  = { net_mac = "d4:f5:ef:7c:c9:cc", ip = "10.250.0.14", ipmi_ip = "192.168.3.6" },
-#    sb-hp-8  = { net_mac = "d4:f5:ef:7c:c9:c8", ip = "10.250.0.15", ipmi_ip = "192.168.3.12" }
+    sb-hp-7  = { net_mac = "d4:f5:ef:7c:c9:cc", ip = "10.250.0.14", ipmi_ip = "192.168.3.6" },
+    sb-hp-8  = { net_mac = "d4:f5:ef:7c:c9:c8", ip = "10.250.0.15", ipmi_ip = "192.168.3.12" }
   }
   dns_servers             = [ "1.1.1.1", "8.8.8.8" ]
   ip_gateway              = "10.250.0.1"

@@ -3,7 +3,7 @@
 Experimental deployment of single and multi-node bare metal Appstack sites with automatic power cycle
 and one time pxe boot triggers.
 
-Clone this repo: `git clone --recurse-submodules https://github.com/mwiget/f5xc-aoa-cluster`
+Clone this repo: `git clone --recurse-submodules https://github.com/mwiget/f5xc-aob-cluster`
 
 Copy terraform.tfvars.example to terraform.tfvars, then update the file with credentials 
 and list of node servers

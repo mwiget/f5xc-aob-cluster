@@ -172,3 +172,18 @@ variable "bridge_vlans" {
   type = set(string)
   default = []
 }
+
+variable "sriov_interfaces" {
+  type = set(string)
+  default = []
+}
+
+variable "number_of_vfs" {
+  type = number
+  default = 0
+}
+
+variable "number_of_vfio_vfs" {
+  type = number
+  default = 0
+}

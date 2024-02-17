@@ -37,22 +37,30 @@ module "ryzen1" {
   kickstart_template      = "kickstart-supermicro.cfg"
   # f5xc_http_proxy	      = "http://10.200.2.30:3128"
   manual_registration     = true  # true -> don't auto-register, terminate
+  sriov_interfaces        = [
+        "enp129s0f1",
+        "enp129s0f2",
+        "enp194s0f0",
+        "enp194s0f1",
+        "enp194s0f2",
+        "enp194s0f3",
+        "enp65s0f0np0",
+        "enp65s0f1np1"
+  ]
+  number_of_vfs         = 64
+  number_of_vfio_vfs    = 32
   sriov_vlans           = [
-    #    "enp129s0f1.1234",
-    #    "enp129s0f2.1234",
-    #    "enp129s0f3.1234",
-    #    "enp194s0f0.1234",
-    #    "enp194s0f1.1234",
-    #    "enp194s0f2.1234",
-    #    "enp194s0f3.1234",
-    #    "enp65s0f0np0.1234",
-    #    "enp65s0f1np1.1234"
+        "enp129s0f1.251",
+        "enp129s0f2.251",
+        "enp194s0f0.251",
+        "enp194s0f1.251",
+        "enp194s0f2.251",
+        "enp194s0f3.251",
+        "enp65s0f0np0.251",
+        "enp65s0f1np1.251"
   ]
   bridge_vlans             = [
-    # "enp194s0f0.250",
-    #    "enp194s0f0.251",
-    #    "enp194s0f1.250",
-    #    "enp194s0f1.251"
+        "enp129s0f3.251"
   ]
 }
 

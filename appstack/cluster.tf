@@ -97,17 +97,17 @@ resource "restapi_object" "cluster" {
         "allow_all_usb": {},
         var.kubevirt ? "enable_vm" : "disable_vm": {},
         "default_blocked_services": {},
-        "default_sriov_interface": {},
-      #  "sriov_interfaces": {}
-      #        "sriov_interfaces": {
-      #    "sriov_interface": [
-      #      {
-      #        "interface_name": "enp129s0f1",
-      #        "number_of_vfs": 8,
-      #        "number_of_vfio_vfs": 2
-      #      }
-      #    ]
-      #  }
+      #  "default_sriov_interface": {},
+        "sriov_interfaces": {}
+              "sriov_interfaces": {
+          "sriov_interface": [
+            for pf in var.sriov_interfaces: {
+              "interface_name": pf,
+              "number_of_vfs": var.number_of_vfs,
+              "number_of_vfio_vfs": var.number_of_vfio_vfs
+            }
+          ]
+        }
       }
     })
 }

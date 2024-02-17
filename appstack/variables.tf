@@ -119,11 +119,6 @@ variable "manual_registration" {
   default = false
 }
 
-variable "original_outside_nic" {
-  type = string
-  default = "em1"
-}
-
 variable "primary_outside_nic" {
   type = string
   default = "eth0"
@@ -131,7 +126,7 @@ variable "primary_outside_nic" {
 
 variable "primary_outside_nic_2" {
   type = string
-  default = "eth1"
+  default = ""
 }
 
 variable "admin_password" {
@@ -165,5 +160,15 @@ variable "ip_gateway" {
 }
 variable "dns_servers" {
   type = list(string)
+  default = []
+}
+
+variable "sriov_vlans" {
+  type = set(string)
+  default = []
+}
+
+variable "bridge_vlans" {
+  type = set(string)
   default = []
 }

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ubuntu-login
+spec:
+  selector:
+    matchLabels:
+      app: ubuntu-login
+  template:
+    metadata:
+      labels:
+        app: ubuntu-login
+      annotations:
+        ves.io/wingman-injection-mode: disable
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - image: public.ecr.aws/docker/library/ubuntu:22.04
+        imagePullPolicy: Always
+          # imagePullPolicy: IfNotPresent
+        command: ["/bin/bash"]
+        args: [ "-c", "apt update; apt install -y iputils-ping file bridge-utils curl wget iperf3 lshw btop htop bwm-ng net-tools ethtool pciutils mstflint; wget https://www.mellanox.com/downloads/firmware/mlxup/4.26.0/SFX/linux_x64/mlxup; chmod +x mlxup; mv mlxup /usr/bin/; sleep infinity"]
+        name: ubuntu
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+          - name: hostroot
+            mountPath: /host
+      volumes:
+        - name: hostroot
+          hostPath:
+            path: /

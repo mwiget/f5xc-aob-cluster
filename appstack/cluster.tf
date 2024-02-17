@@ -47,52 +47,42 @@ resource "restapi_object" "cluster" {
           }
         ],
         "worker_nodes": [ for k,v in var.f5xc_worker_nodes : k ],
-        "bond_device_list": {
-          "bond_devices": [
-            {
-              "name": "bond0",
-              "devices": [
-                var.primary_outside_nic,
-                var.primary_outside_nic_2
-              ],
-              "lacp": {
-                "rate": 30
-              },
-              "link_polling_interval": 1000,
-              "link_up_delay": 200
-            }
-          ]
-        },
+        "no_bond_devices": {},
+      # "bond_device_list": var.primary_outside_nic_2 == "" ? {} : {
+      #     "bond_devices": [
+      #      {
+      #        "name": "bond0",
+      #        "devices": [
+      #          var.primary_outside_nic,
+       #          var.primary_outside_nic_2
+      #       ],
+      #        "lacp": {
+      #          "rate": 30
+      #        },
+      #        "link_polling_interval": 1000,
+      #        "link_up_delay": 200
+      #      }
+      #    ]
+      #  },
         "custom_network_config": {
           "default_config": {},
           "sm_connection_pvt_ip": {},
-          "interface_list": {
-            "interfaces": [
-              for k,v in merge(var.f5xc_master_nodes, var.f5xc_worker_nodes): {
-                "labels": {},
-                "ethernet_interface": {
-                  "device": "bond0",
-                  "node": k,
-                  "untagged": {},
-                  "static_ip": {
-                    "node_static_ip": {
-                      "ip_address": v["ip"],
-                      "default_gw": var.ip_gateway
-                    }
-                  },
-                  "site_local_network": {},
-                  "mtu": 0,
-                  "priority": 0,
-                  "is_primary": {},
-                  "monitor_disabled": {}
-                },
-                "dc_cluster_group_connectivity_interface_disabled": {}
+          "default_interface_config": {},
+          "no_network_policy": {},
+          "no_forward_proxy": {},
+          "global_network_list": {
+            "global_network_connections": [
+              {
+                "slo_to_global_dr": {
+                  "global_vn": {
+                    "namespace": "system",
+                    "name": "sb-ipv6-global-network",
+                    "kind": "virtual_network"
+                  }
+                }
               }
             ]
           },
-          "no_network_policy": {},
-          "no_forward_proxy": {},
-          "no_global_network": {},
           "vip_vrrp_mode": "VIP_VRRP_INVALID",
           "tunnel_dead_timeout": 0
         },
@@ -107,18 +97,28 @@ resource "restapi_object" "cluster" {
         "allow_all_usb": {},
         var.kubevirt ? "enable_vm" : "disable_vm": {},
         "default_blocked_services": {},
-        "default_sriov_interface": {}
+        "default_sriov_interface": {},
+      #  "sriov_interfaces": {}
+      #        "sriov_interfaces": {
+      #    "sriov_interface": [
+      #      {
+      #        "interface_name": "enp129s0f1",
+      #        "number_of_vfs": 8,
+      #        "number_of_vfio_vfs": 2
+      #      }
+      #    ]
+      #  }
       }
     })
 }
 
-resource "time_sleep" "wait_10_minutes" {
-  depends_on = [restapi_object.cluster]
-  create_duration = "600s"
-}
+#resource "time_sleep" "wait_10_minutes" {
+#  depends_on = [restapi_object.cluster]
+#  create_duration = "600s"
+#}
 
 resource "volterra_registration_approval" "master" {
-  depends_on   = [time_sleep.wait_10_minutes]
+  depends_on   = [restapi_object.cluster]
   for_each      = var.manual_registration ? {} : var.f5xc_master_nodes
   cluster_name = var.f5xc_cluster_name
   cluster_size = length(var.f5xc_master_nodes)
@@ -151,7 +151,7 @@ resource "volterra_registration_approval" "worker" {
 }
 
 resource "time_offset" "exp_time" {
-  offset_days = 30
+  offset_days = 90
 }
 
 data "http" "kubeconfig" {

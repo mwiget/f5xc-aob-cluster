@@ -1,1 +1,1 @@
-export KUBECONFIG="$PWD/mw-baremetal-3.kubeconfig"
+export KUBECONFIG="$PWD/mw-ryzen1.kubeconfig"

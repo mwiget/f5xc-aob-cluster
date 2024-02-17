@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: alpine-login
+spec:
+  selector:
+    matchLabels:
+      app: alpine-login
+  template:
+    metadata:
+      labels:
+        app: alpine-login
+      annotations:
+        ves.io/wingman-injection-mode: disable
+    spec:
+      hostNetwork: true
+      hostPID: true
+      containers:
+      - image: public.ecr.aws/docker/library/alpine:latest
+        imagePullPolicy: Always
+          # imagePullPolicy: IfNotPresent
+        command: ["/bin/ash"]
+        args: [ "-c", "apk add ipmitool curl iperf3 lshw btop htop bwm-ng; sleep infinity"]
+        name: alpine
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        volumeMounts:
+          - name: hostroot
+            mountPath: /host
+      volumes:
+        - name: hostroot
+          hostPath:
+            path: /

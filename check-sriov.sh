@@ -1,7 +1,9 @@
 #!/bin/bash
-export KUBECONFIG="$PWD/mw-milan1.kubeconfig"
+export KUBECONFIG="$PWD/mw-ryzen1.kubeconfig"
 echo ""
-for node in mw-milan1; do
+nodes=$(kubectl get nodes | grep ' Ready ' | awk '{print $1}')
+echo $nodes
+for node in $nodes; do
   echo "$node ..."
   kubectl get nodes $node -o json | jq '.status.allocatable'
   echo ""

@@ -1,5 +1,5 @@
 #!/bin/bash
-export KUBECONFIG="$PWD/mw-ryzen1.kubeconfig"
+source env.sh
 echo ""
 nodes=$(kubectl get nodes | grep ' Ready ' | awk '{print $1}')
 echo $nodes

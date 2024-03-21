@@ -29,96 +29,13 @@ resource "volterra_k8s_cluster" "cluster" {
   use_default_psp = true
 }
 
-
-resource "restapi_object" "cluster" {
-  id_attribute = "metadata/name"
-    path         = "/config/namespaces/system/voltstack_sites"
-    data         = jsonencode ({
-      "metadata": {
-        "name": var.f5xc_cluster_name,
-        "namespace": "system",
-        "description": var.description,
-      },
-      "spec": {
-        "volterra_certified_hw": var.volterra_certified_hw,
-        "master_node_configuration": [ 
-          for k,v in var.f5xc_master_nodes: {
-            "name": k
-          }
-        ],
-        "worker_nodes": [ for k,v in var.f5xc_worker_nodes : k ],
-        "no_bond_devices": {},
-      # "bond_device_list": var.primary_outside_nic_2 == "" ? {} : {
-      #     "bond_devices": [
-      #      {
-      #        "name": "bond0",
-      #        "devices": [
-      #          var.primary_outside_nic,
-       #          var.primary_outside_nic_2
-      #       ],
-      #        "lacp": {
-      #          "rate": 30
-      #        },
-      #        "link_polling_interval": 1000,
-      #        "link_up_delay": 200
-      #      }
-      #    ]
-      #  },
-        "custom_network_config": {
-          "default_config": {},
-          "sm_connection_pvt_ip": {},
-          "default_interface_config": {},
-          "no_network_policy": {},
-          "no_forward_proxy": {},
-          "global_network_list": {
-            "global_network_connections": [
-              {
-                "slo_to_global_dr": {
-                  "global_vn": {
-                    "namespace": "system",
-                    "name": "sb-ipv6-global-network",
-                    "kind": "virtual_network"
-                  }
-                }
-              }
-            ]
-          },
-          "vip_vrrp_mode": "VIP_VRRP_INVALID",
-          "tunnel_dead_timeout": 0
-        },
-        "default_storage_config": {},
-        "disable_gpu": {},
-        "k8s_cluster": {
-          "namespace": "system",
-          "name": volterra_k8s_cluster.cluster.name,
-          "kind": "k8s_cluster"
-        },
-        "logs_streaming_disabled": {},
-        "allow_all_usb": {},
-        var.kubevirt ? "enable_vm" : "disable_vm": {},
-        "default_blocked_services": {},
-      #  "default_sriov_interface": {},
-        "sriov_interfaces": {}
-              "sriov_interfaces": {
-          "sriov_interface": [
-            for pf in var.sriov_interfaces: {
-              "interface_name": pf,
-              "number_of_vfs": var.number_of_vfs,
-              "number_of_vfio_vfs": var.number_of_vfio_vfs
-            }
-          ]
-        }
-      }
-    })
-}
-
 #resource "time_sleep" "wait_10_minutes" {
 #  depends_on = [restapi_object.cluster]
 #  create_duration = "600s"
 #}
 
 resource "volterra_registration_approval" "master" {
-  depends_on   = [restapi_object.cluster]
+  depends_on   = [restapi_object.cluster-single, restapi_object.cluster-bond ]
   for_each      = var.manual_registration ? {} : var.f5xc_master_nodes
   cluster_name = var.f5xc_cluster_name
   cluster_size = length(var.f5xc_master_nodes)
@@ -130,7 +47,7 @@ resource "volterra_registration_approval" "master" {
 
 module "site_wait_for_online" {
   count        = var.manual_registration ? 0 : 1
-  depends_on     = [restapi_object.cluster]
+  depends_on     = [restapi_object.cluster-single, restapi_object.cluster-bond ]
   source         = "../modules/f5xc/status/site"
   f5xc_api_token = var.f5xc_api_token
   f5xc_api_url   = var.f5xc_api_url

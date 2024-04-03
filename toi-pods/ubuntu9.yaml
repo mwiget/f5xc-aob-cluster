@@ -1,0 +1,78 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: ubuntu9
+  creationTimestamp: null
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        image: ubuntu9
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: sb-hp-9
+      domain:
+        resources:
+          limits:
+            cpu: 2
+            memory: 2Gi
+        devices:
+          disks:
+          - name: containerdisk
+            disk:
+              bus: virtio
+          - name: cloudinit
+            disk:
+              bus: virtio
+          interfaces:
+            - name: default-net
+              sriov: {}
+          rng: {}
+        features:
+          acpi: {}
+          smm:
+            enabled: true
+        firmware:
+          bootloader:
+            efi:
+              secureBoot: true
+      networks:
+        - name: default-net
+          # pod: {} # Uses default Volterra CNI as for vk8s pods
+          #        - name: multus-sriov
+          multus: # Secondary multus network
+            networkName: ves-system/sb-infra-march-eno5np0-251-vfio
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: quay.io/containerdisks/ubuntu:22.04
+        - name: cloudinit
+          cloudInitNoCloud:
+            networkData: |
+              version: 2
+              ethernets:
+                enp5s0: 
+                  dhcp4: true
+            userData: |
+              #cloud-config
+              password: ubuntu
+              chpasswd: {expire: False}
+              ssh_pwauth: True
+              ssh_authorized_keys:
+                - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN3CHHKQjBUApL7pIc0wGOLROmN5WIqZRpXJPle+QTeC mwiget@zug1
+              packages:
+                - curl
+                - iperf3
+                - ethtool
+                - htop
+                - bwm-ng
+                - tcpdump
+                - net-tootls
+                - pciutils
+                - lshw
+              package_update: true
+              package_reboot_if_required: true
+              runcmd:
+                - curl -fsSL https://tailscale.com/install.sh | sh

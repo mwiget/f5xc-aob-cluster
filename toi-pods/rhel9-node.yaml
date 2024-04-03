@@ -1,0 +1,62 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: mw-rhel9-ce
+  creationTimestamp: null
+spec:
+  runStrategy: Always
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        cluster: mw-rhel9-ce
+    spec:
+      domain:
+        cpu:
+          model: host-passthrough
+        resources:
+          limits:
+            cpu: 4
+            memory: 16Gi
+        devices:
+          disks:
+          - name: containerdisk
+            disk:
+              bus: virtio
+          - name: cloudinit
+            disk:
+              bus: virtio
+          interfaces:
+            - sriov: {}
+              name: default-net
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 1.1.1.1
+          - 8.8.8.8
+      networks:
+      - name: default-net
+        multus:
+          networkName: "ves-system/sb-infra-march-eno5np0-251-vfio"
+      volumes:
+        - name: containerdisk
+          containerDisk:
+            image: us-west1-docker.pkg.dev/solutions-team-280017/vesio-ver9-ce/rhel-ce:9.2024.6
+        - name: cloudinit
+          cloudInitNoCloud:
+            userData: |
+              #cloud-config
+              users:
+                - name: "vesop"
+                  passwd: ""
+                  groups:
+                    - "sudo"
+              coreos:
+                update:
+                  reboot-strategy: "off"
+              network:
+                version: 2
+              write_files:
+              runcmd:
+                - [ sh, -c, test -e /usr/bin/fsextend  && /usr/bin/fsextend || true ]
+              hostname: mw-rhel9-ce

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-sriov-static
+  annotations:
+    ves.io/wingman-injection-mode: disable
+    k8s.v1.cni.cncf.io/networks: '[ { "namespace": "ves-system", "name": "sb-infra-march-eno5np0-251-static",
+      "ips": [ "10.251.251.71/24", "2001:cafe::71/64" ] } ]'
+spec:
+  #  nodeSelector:
+  #  kubernetes.io/hostname: sb-hp-7
+  containers:
+    - image: public.ecr.aws/docker/library/alpine:latest
+      command: ["/bin/ash"]
+      args: [ "-c", "apk add iperf3 curl tcpdump pciutils ethtool; iperf3 -s"]
+      imagePullPolicy: IfNotPresent
+      name: alpine
+      securityContext:
+        privileged: true
+        runAsUser: 0
+      resources:
+        limits:
+          f5xc-sriov/eno5np0: "1"
+        requests:
+          f5xc-sriov/eno5np0: "1"
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+    - 1.1.1.1
+    - 8.8.8.8
